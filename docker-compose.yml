@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/pg_data
+    environment:
+      POSTGRES_USER: dev     #ユーザー名
+      POSTGRES_PASSWORD: dev #パスワード
+      POSTGRES_DB: dev
+      
+  web:
+    build: .
+    volumes:
+      - .:/apps
+    ports:
+      - "3000:3000"
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+    working_dir: /apps
+
+volumes:
+  pg_data:
+    driver: local
